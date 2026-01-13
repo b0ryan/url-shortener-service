@@ -47,9 +47,12 @@ public class UrlShortenerApp {
                         editLink();
                         break;
                     case "5":
-                        showUserId();
+                        deleteLink();
                         break;
                     case "6":
+                        showUserId();
+                        break;
+                    case "7":
                         setUserId();
                         break;
                     case "0":
@@ -88,8 +91,9 @@ public class UrlShortenerApp {
         System.out.println("2. Перейти по короткой ссылке");
         System.out.println("3. Просмотреть мои ссылки");
         System.out.println("4. Редактировать ссылку");
-        System.out.println("5. Показать мой User ID");
-        System.out.println("6. Установить User ID");
+        System.out.println("5. Удалить ссылку");
+        System.out.println("6. Показать мой User ID");
+        System.out.println("7. Установить User ID");
         System.out.println("0. Выход");
         System.out.println("═══════════════════════════════════════════════════════");
         System.out.print("Выберите действие: ");
@@ -452,6 +456,35 @@ public class UrlShortenerApp {
                 NotificationService.notifySuccess("Параметры ссылки не изменены (новые значения совпадают с текущими).");
             } else {
                 NotificationService.notifyError("Ошибка при обновлении ссылки");
+            }
+        }
+    }
+
+    private static void deleteLink() {
+        System.out.println("\n--- Удаление ссылки ---");
+        
+        if (currentUserId == null) {
+            NotificationService.notifyError("User ID не установлен.");
+            return;
+        }
+        
+        System.out.print("Введите короткую ссылку для удаления: ");
+        String shortUrl = scanner.nextLine().trim();
+        
+        if (shortUrl.isEmpty()) {
+            NotificationService.notifyError("Ссылка не может быть пустой");
+            return;
+        }
+        
+        boolean deleted = linkService.deleteLink(shortUrl, currentUserId);
+        if (deleted) {
+            NotificationService.notifyLinkDeleted(shortUrl);
+        } else {
+            Link link = linkService.getLinkInfo(shortUrl);
+            if (link == null) {
+                NotificationService.notifyError("Ссылка не найдена");
+            } else {
+                NotificationService.notifyError("Вы не являетесь владельцем этой ссылки");
             }
         }
     }

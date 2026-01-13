@@ -215,6 +215,35 @@ public class LinkService {
     }
 
     /**
+     * Удаляет ссылку (только если пользователь является владельцем)
+     * @param shortUrl короткая ссылка
+     * @param userId UUID пользователя
+     * @return true, если ссылка удалена
+     */
+    public boolean deleteLink(String shortUrl, UUID userId) {
+        Link link = links.get(shortUrl);
+        
+        if (link == null) {
+            return false;
+        }
+
+        if (!link.getUserId().equals(userId)) {
+            return false;
+        }
+
+        links.remove(shortUrl);
+        User user = users.get(userId);
+        if (user != null) {
+            user.removeShortUrl(shortUrl);
+        }
+        
+        // Сохраняем изменения
+        saveData();
+        
+        return true;
+    }
+
+    /**
      * Проверяет статус ссылки и возвращает причину недоступности, если есть
      * @param shortUrl короткая ссылка
      * @return сообщение о статусе или null, если ссылка доступна
