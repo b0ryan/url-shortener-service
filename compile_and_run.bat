@@ -13,7 +13,7 @@ if not exist target\classes (
 )
 
 echo Компиляция проекта...
-javac -d target/classes -encoding UTF-8 -sourcepath src/main/java src/main/java/com/urlshortener/*.java src/main/java/com/urlshortener/model/*.java src/main/java/com/urlshortener/service/*.java src/main/java/com/urlshortener/util/*.java
+javac -d target/classes -encoding UTF-8 -sourcepath src/main src/main/*.java src/main/model/*.java src/main/service/*.java src/main/util/*.java
 
 if %ERRORLEVEL% NEQ 0 (
     echo.
@@ -26,7 +26,7 @@ echo ✅ Компиляция успешна!
 echo.
 echo Запуск приложения...
 echo.
-java -cp target/classes com.urlshortener.UrlShortenerApp
+java -cp target/classes UrlShortenerApp
 
 if %ERRORLEVEL% NEQ 0 (
     echo.

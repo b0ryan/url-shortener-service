@@ -1,8 +1,6 @@
-package com.urlshortener;
-
-import com.urlshortener.model.Link;
-import com.urlshortener.service.LinkService;
-import com.urlshortener.service.ShortUrlGenerator;
+import model.Link;
+import service.LinkService;
+import service.ShortUrlGenerator;
 import org.junit.Test;
 import java.time.LocalDateTime;
 import java.util.UUID;

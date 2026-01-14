@@ -1,6 +1,6 @@
-package com.urlshortener.util;
+package util;
 
-import com.urlshortener.model.Link;
+import model.Link;
 
 /**
  * Сервис уведомлений пользователя

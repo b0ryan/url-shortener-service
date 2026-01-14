@@ -1,4 +1,4 @@
-package com.urlshortener.model;
+package model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

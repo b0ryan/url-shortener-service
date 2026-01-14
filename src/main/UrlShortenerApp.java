@@ -1,9 +1,7 @@
-package com.urlshortener;
-
-import com.urlshortener.model.Link;
-import com.urlshortener.service.LinkService;
-import com.urlshortener.util.BrowserOpener;
-import com.urlshortener.util.NotificationService;
+import model.Link;
+import service.LinkService;
+import util.BrowserOpener;
+import util.NotificationService;
 
 import java.util.List;
 import java.util.Scanner;

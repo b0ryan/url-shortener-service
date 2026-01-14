@@ -1,7 +1,7 @@
-package com.urlshortener.service;
+package service;
 
-import com.urlshortener.model.Link;
-import com.urlshortener.model.User;
+import model.Link;
+import model.User;
 
 import java.time.LocalDateTime;
 import java.util.*;

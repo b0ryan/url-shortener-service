@@ -1,4 +1,4 @@
-package com.urlshortener.service;
+package service;
 
 import java.security.SecureRandom;
 import java.util.UUID;

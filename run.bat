@@ -15,7 +15,7 @@ if not exist target\classes (
 
 echo Запуск приложения...
 echo.
-java -cp target/classes com.urlshortener.UrlShortenerApp
+java -cp target/classes UrlShortenerApp
 
 if %ERRORLEVEL% NEQ 0 (
     echo.
