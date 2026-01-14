@@ -16,7 +16,6 @@ public class UrlShortenerApp {
     private static UUID currentUserId = null;
 
     public static void main(String[] args) {
-        // Добавляем обработчик для сохранения данных при закрытии
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("\n💾 Сохранение данных...");
             linkService.shutdown();
@@ -100,7 +99,6 @@ public class UrlShortenerApp {
     private static void createShortLink() {
         System.out.println("\n--- Создание короткой ссылки ---");
         
-        // Генерируем или используем существующий User ID
         if (currentUserId == null) {
             currentUserId = UUID.randomUUID();
             System.out.println("Ваш User ID: " + currentUserId);
@@ -117,7 +115,7 @@ public class UrlShortenerApp {
         
         System.out.print("Введите лимит переходов (или Enter для 10): ");
         String limitInput = scanner.nextLine().trim();
-        int clickLimit = 10; // По умолчанию
+        int clickLimit = 10; 
         if (!limitInput.isEmpty()) {
             try {
                 clickLimit = Integer.parseInt(limitInput);
@@ -131,16 +129,14 @@ public class UrlShortenerApp {
             }
         }
         
-        // Запрос времени жизни ссылки
+
         System.out.print("Введите время жизни ссылки (например: 24ч, 3д, 12 часов, 2 дня) или Enter для 24 часов: ");
         String expirationInput = scanner.nextLine().trim();
-        int expirationHours = 24; // По умолчанию 24 часа
+        int expirationHours = 24; 
         
         if (!expirationInput.isEmpty()) {
-            // Парсим ввод: число + единица измерения (ч/час/часов/д/день/дней)
             expirationInput = expirationInput.toLowerCase().trim();
             
-            // Определяем единицу измерения
             boolean isDays = false;
             int value = 0;
             
@@ -148,7 +144,6 @@ public class UrlShortenerApp {
                 expirationInput.endsWith("дней") || expirationInput.endsWith("d") || 
                 expirationInput.endsWith("day") || expirationInput.endsWith("days")) {
                 isDays = true;
-                // Извлекаем число
                 String numberPart = expirationInput.replaceAll("[^0-9]", "");
                 if (numberPart.isEmpty()) {
                     NotificationService.notifyError("Неверный формат времени жизни");
@@ -159,7 +154,6 @@ public class UrlShortenerApp {
                        expirationInput.endsWith("часов") || expirationInput.endsWith("h") || 
                        expirationInput.endsWith("hour") || expirationInput.endsWith("hours")) {
                 isDays = false;
-                // Извлекаем число
                 String numberPart = expirationInput.replaceAll("[^0-9]", "");
                 if (numberPart.isEmpty()) {
                     NotificationService.notifyError("Неверный формат времени жизни");
@@ -167,10 +161,8 @@ public class UrlShortenerApp {
                 }
                 value = Integer.parseInt(numberPart);
             } else {
-                // Пытаемся распарсить как число без единицы измерения
                 try {
                     value = Integer.parseInt(expirationInput);
-                    // По умолчанию считаем часами
                     isDays = false;
                 } catch (NumberFormatException e) {
                     NotificationService.notifyError("Неверный формат времени жизни. Используйте формат: число + единица (ч/д)");
@@ -183,7 +175,6 @@ public class UrlShortenerApp {
                 return;
             }
             
-            // Конвертируем в часы
             if (isDays) {
                 expirationHours = value * 24;
             } else {
@@ -196,7 +187,6 @@ public class UrlShortenerApp {
             NotificationService.notifyLinkCreated(shortUrl, originalUrl);
             System.out.println("Лимит переходов: " + clickLimit);
             
-            // Форматируем вывод времени жизни
             String expirationText;
             if (expirationHours >= 24 && expirationHours % 24 == 0) {
                 int days = expirationHours / 24;
@@ -258,7 +248,6 @@ public class UrlShortenerApp {
             return;
         }
         
-        // Проверяем статус ссылки
         String status = linkService.checkLinkStatus(shortUrl);
         if (status != null) {
             Link link = linkService.getLinkInfo(shortUrl);
@@ -266,7 +255,6 @@ public class UrlShortenerApp {
             return;
         }
         
-        // Получаем оригинальный URL
         String originalUrl = linkService.getOriginalUrl(shortUrl);
         
         if (originalUrl == null) {
@@ -281,7 +269,6 @@ public class UrlShortenerApp {
             System.out.println("✅ Браузер открыт!");
         }
         
-        // Проверяем, не исчерпан ли лимит после перехода
         Link link = linkService.getLinkInfo(shortUrl);
         if (link != null && link.isClickLimitReached()) {
             NotificationService.notifyLinkUnavailable(link, "Лимит переходов исчерпан");
@@ -345,13 +332,11 @@ public class UrlShortenerApp {
             return;
         }
         
-        // Показываем текущие значения
         System.out.println("\nТекущие параметры ссылки:");
         System.out.println("Короткая ссылка: " + link.getShortUrl());
         System.out.println("Оригинальный URL: " + link.getOriginalUrl());
         System.out.println("Лимит переходов: " + link.getClickLimit() + " (использовано: " + link.getCurrentClicks() + ")");
         
-        // Форматируем вывод времени жизни
         long hoursRemaining = java.time.Duration.between(java.time.LocalDateTime.now(), link.getExpiresAt()).toHours();
         if (hoursRemaining > 0) {
             if (hoursRemaining >= 24 && hoursRemaining % 24 == 0) {
@@ -366,7 +351,6 @@ public class UrlShortenerApp {
         System.out.println("\n--- Изменение параметров ---");
         System.out.println("(Нажмите Enter, чтобы оставить значение без изменений)");
         
-        // Запрос нового лимита переходов
         System.out.print("Новый лимит переходов (текущий: " + link.getClickLimit() + "): ");
         String limitInput = scanner.nextLine().trim();
         Integer newClickLimit = null;
@@ -384,7 +368,6 @@ public class UrlShortenerApp {
             }
         }
         
-        // Запрос нового времени жизни
         System.out.print("Новое время жизни ссылки (например: 24ч, 3д) или Enter для текущего: ");
         String expirationInput = scanner.nextLine().trim();
         Integer newExpirationHours = null;
@@ -437,7 +420,6 @@ public class UrlShortenerApp {
             }
         }
         
-        // Обновляем ссылку
         boolean updated = linkService.updateLink(shortUrl, currentUserId, newClickLimit, newExpirationHours);
         
         if (updated) {
@@ -446,7 +428,6 @@ public class UrlShortenerApp {
         } else if (newClickLimit == null && newExpirationHours == null) {
             NotificationService.notifySuccess("Параметры ссылки не изменены.");
         } else {
-            // Проверяем, были ли попытки изменить на те же значения
             boolean limitSame = newClickLimit != null && newClickLimit.equals(link.getClickLimit());
             boolean expirationSame = newExpirationHours != null;
             

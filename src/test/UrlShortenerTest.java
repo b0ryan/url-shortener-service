@@ -52,15 +52,12 @@ public class UrlShortenerTest {
         
         String shortUrl = service.createShortLink(originalUrl, userId, clickLimit, 24);
         
-        // Первый переход
         String url1 = service.getOriginalUrl(shortUrl);
         assertNotNull("Первый переход должен быть успешным", url1);
         
-        // Второй переход
         String url2 = service.getOriginalUrl(shortUrl);
         assertNotNull("Второй переход должен быть успешным", url2);
         
-        // Третий переход - должен быть заблокирован
         String url3 = service.getOriginalUrl(shortUrl);
         assertNull("Третий переход должен быть заблокирован", url3);
         
@@ -77,7 +74,6 @@ public class UrlShortenerTest {
         String shortUrl = service.createShortLink(originalUrl, userId, 10, 24);
         Link link = service.getLinkInfo(shortUrl);
         
-        // Устанавливаем время истечения в прошлое
         link.setExpiresAt(LocalDateTime.now().minusHours(1));
         
         assertTrue("Ссылка должна быть просрочена", link.isExpired());
@@ -109,7 +105,6 @@ public class UrlShortenerTest {
         
         String shortUrl = service.createShortLink(originalUrl, userId, 10, 24);
         
-        // Удаление своей ссылки
         boolean deleted = service.deleteLink(shortUrl, userId);
         assertTrue("Ссылка должна быть удалена", deleted);
         
@@ -126,7 +121,6 @@ public class UrlShortenerTest {
         
         String shortUrl = service.createShortLink(originalUrl, userId1, 10);
         
-        // Попытка удалить чужую ссылку
         boolean deleted = service.deleteLink(shortUrl, userId2);
         assertFalse("Чужая ссылка не должна быть удалена", deleted);
         
@@ -154,10 +148,8 @@ public class UrlShortenerTest {
         
         String shortUrl = service.createShortLink(originalUrl, userId, 1);
         
-        // Первый переход
         service.getOriginalUrl(shortUrl);
         
-        // Проверка статуса после исчерпания лимита
         String status = service.checkLinkStatus(shortUrl);
         assertNotNull("Статус должен указывать на проблему", status);
         assertTrue("Статус должен указывать на исчерпание лимита", 

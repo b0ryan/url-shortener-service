@@ -54,7 +54,6 @@ public class StorageService {
             }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Ошибка при загрузке ссылок: " + e.getMessage());
-            // Если файл поврежден, создаем новый
             links = new HashMap<>();
         }
 
@@ -96,7 +95,6 @@ public class StorageService {
             }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Ошибка при загрузке пользователей: " + e.getMessage());
-            // Если файл поврежден, создаем новый
             users = new HashMap<>();
         }
 
