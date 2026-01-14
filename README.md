@@ -22,11 +22,11 @@
 2. Откройте терминал в директории проекта
 3. Скомпилируйте проект:
    ```bash
-   javac -d target/classes -encoding UTF-8 -sourcepath src/main/java src/main/java/com/urlshortener/*.java src/main/java/com/urlshortener/model/*.java src/main/java/com/urlshortener/service/*.java src/main/java/com/urlshortener/util/*.java
+   javac -d target/classes -encoding UTF-8 -sourcepath src/main src/main/*.java src/main/model/*.java src/main/service/*.java src/main/util/*.java
    ```
 4. Запустите приложение:
    ```bash
-   java -cp target/classes com.urlshortener.UrlShortenerApp
+   java -cp target/classes UrlShortenerApp
    ```
    
    Или используйте скрипт `compile_and_run.bat` (Windows)
@@ -109,13 +109,14 @@
 ## Структура проекта
 
 ```
-src/main/java/com/urlshortener/
+src/main/
 ├── model/
 │   ├── Link.java          # Модель короткой ссылки
 │   └── User.java          # Модель пользователя
 ├── service/
 │   ├── LinkService.java   # Основной сервис для работы со ссылками
-│   └── ShortUrlGenerator.java  # Генератор коротких ссылок
+│   ├── ShortUrlGenerator.java  # Генератор коротких ссылок
+│   └── StorageService.java     # Сервис сохранения/загрузки данных
 ├── util/
 │   ├── BrowserOpener.java      # Утилита для открытия браузера
 │   └── NotificationService.java # Сервис уведомлений
